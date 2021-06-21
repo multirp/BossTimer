@@ -1,0 +1,21 @@
+main: main.java.com.aspiriamc.bosstimer.Main
+name: BossTimer
+author: multirp
+description: Allows the ender dragon to be spawned on a timer, while not damaging the End world.  Potentially other bosses
+version: 0.1
+api-version: 1.16
+
+commands:
+  bosstimer:
+    Description: The main BossTimer command
+    
+Permissions:
+  bosstimer.*:
+    description: Implies all BossTimer permissions
+    default: op
+    children:
+      bosstimer.admin: true
+  bosstimer.admin:
+    description: Allows you to start and stop the BossTimer schedules for the bosses
+    default: op
+  

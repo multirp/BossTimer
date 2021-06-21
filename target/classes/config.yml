@@ -1,0 +1,75 @@
+# Configuration is fairly straight forward.  At the top are the 'base' options that will apply to all bosses
+# that are configured within the plugin.  These will be fairly generic - right now just how far away a player
+# has to be before the boss bar shows up, and whether to use messages or not.
+# 
+# The interesting stuff happens in the actual boss nodes.  Each boss that we configure will get a node for
+# itself that will handle how it behaves.  Whether it can respawn, what length of time before it respawns,
+# and mob-specific messages and other information.
+# 
+# For now, the EnderDragon is the only configured boss, and is special in that she requires setup, namely
+# the regeneration of the end crystals.  So the spawn point for the dragon is set, as are all of the end
+# crystal locations (make them .5 block so the crystal itself spawns in the center, rather than the edge.
+# 
+# Everything should have sane defaults to start with though.
+
+
+bossbar-distance: 250       # how far away, in blocks, the player will get the BossBar
+use-messages: true          # whether or not messages are enabled, 'true' to turn on, everything else to turn off
+
+enderdragon:
+  respawn-enabled: true     # 'true' if the mob respawns, anything else to prevent it from respawning.
+  respawn-time: 60          # When killed, the dragon takes this long to respawn (in minutes, 60 minutes by default)
+  messages:
+    # the spawn and death messages when the dragon is spawned and killed
+    spawn-message: "The Ender Dragon has once again risen from her slumber!  To arms!"
+    death-message: "The Ender Dragon has been laid to rest once more!"
+  
+  # various configured locations.  end-world is the name of the end world, 'dragon-spawn-location' is the block that the
+  # dragon will spawn in, and 'end-crystal-locations' are the coordinates standing in the middle of the bedrock block at
+  # the top of the obsidian pillars.
+  end-world:
+  dragon-spawn-location:
+    x: 
+    y: 
+    z: 
+  end-crystal-locations:
+    one:
+      x:
+      y:
+      z:
+    two:
+      x:
+      y:
+      z:
+    three:
+      x:
+      y:
+      z:
+    four:
+      x:
+      y:
+      z:
+    five:
+      x:
+      y:
+      z:
+    six:
+      x:
+      y:
+      z:
+    seven:
+      x:
+      y:
+      z:
+    eight:
+      x:
+      y:
+      z:
+    nine:
+      x:
+      y:
+      z:
+    ten:
+      x:
+      y:
+      z:
