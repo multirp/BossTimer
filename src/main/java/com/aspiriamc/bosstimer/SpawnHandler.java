@@ -8,6 +8,8 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.entity.EnderDragon;
+import org.bukkit.entity.EnderDragon.Phase;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -121,7 +123,8 @@ public class SpawnHandler {
 				plugin.getConfig().getDouble("enderdragon.dragon-spawn-location.y"),
 				plugin.getConfig().getDouble("enderdragon.dragon-spawn-location.z"));
 		
-		dragonLoc.getWorld().spawnEntity(dragonLoc, EntityType.ENDER_DRAGON);
+		EnderDragon dragon = (EnderDragon) dragonLoc.getWorld().spawnEntity(dragonLoc, EntityType.ENDER_DRAGON);
+		dragon.setPhase(Phase.CIRCLING);
 		
 		if (plugin.getConfig().getString("use-messages") == "true") {
 			for (Player player : Bukkit.getOnlinePlayers()) {
