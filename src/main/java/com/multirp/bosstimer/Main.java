@@ -1,4 +1,4 @@
-package main.java.com.aspiriamc.bosstimer;
+package main.java.com.multirp.bosstimer;
 
 import java.io.File;
 import java.util.HashMap;

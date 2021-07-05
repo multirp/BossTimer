@@ -1,7 +1,6 @@
-package main.java.com.aspiriamc.bosstimer;
+package main.java.com.multirp.bosstimer;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
@@ -12,7 +11,6 @@ import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.EnderDragon.Phase;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 
@@ -24,50 +22,15 @@ public class SpawnHandler {
 	
 	private static Plugin plugin = Main.getInstance();
 	
-	public void mainSpawnSelector(Player player, String[] args) {
-		/*
-		 * This is the second part of the main menu system.  Right now, it only houses the ender dragon but can house every
-		 * other boss we make as well.  When the 'stop' command is issued, it sets the respawn-enabled boolean to false,
-		 * which will stop the listener from activating the next spawn.
-		 * 
-		 * When we start a spawn, it will immediately spawn that boss and set the respawn-enabled boolean to true.  This
-		 * happens per boss in the config file, so we can start/stop individual bosses without stopping the whole thing.
-		 * 
-		 * I may need to find a better home for this at some point... -.-;
-		 */
-		switch (args[1]) {
-		case "start":
-			switch(args[2]) {
-			case "enderdragon":
-				player.sendMessage(ChatColor.GREEN + "[BT] The Ender Dragon's schedule has been enabled");
-				plugin.getConfig().set("enderdragon.respawn-enabled", true);
-				plugin.saveConfig();
-				spawnEnderDragon();
-				break;
-			default:
-				player.sendMessage(ChatColor.RED + "[BT] You must enter a boss that you want to schedule!");
-			}
-			break;
-		case "stop":
-			switch(args[2]) {
-			case "enderdragon":
-				player.sendMessage(ChatColor.GREEN + "[BT] The Ender Dragon's schedule has been disabled");
-				plugin.getConfig().set("enderdragon.respawn-enabled", false);
-				plugin.saveConfig();
-				bar = Main.bars.get(EntityType.ENDER_DRAGON);
-				bb.resetBar(bar, EntityType.ENDER_DRAGON);
-				if (!(Main.dragonTask == null)) {
-					Bukkit.getScheduler().cancelTask(Main.dragonTask.getTaskId());}
-				break;
-			default:
-				player.sendMessage(ChatColor.RED + "[BT] You must enter a boss that you want to unschedule!");
-			}
-			break;			
-		default:
-			player.sendMessage(ChatColor.RED + "Invalid command, please run the help for assistance: " + ChatColor.UNDERLINE + "/bt help");
+	public void toggleEnderDragon(String respawn) {
+		if (respawn.equalsIgnoreCase("start")) {
+			plugin.getConfig().set("enderdragon.respawn-enabled", "true");
+		} else {
+			plugin.getConfig().set("enderdragon.respawn-enabled", "false");
 		}
+		plugin.saveConfig();
 	}
-
+	
 	public void spawnEnderDragon() {
 		/*  
 		 * We're going to spawn an Ender Dragon. To do this, we want the fight to be
@@ -81,7 +44,7 @@ public class SpawnHandler {
 		 * Most other bosses, honestly, will probably be very simple by comparison, but
 		 * the Ender Dragon requires some... setup.
 		 */		
-		World endWorld = Bukkit.getWorld(plugin.getConfig().getString("end-world"));
+		World endWorld = Bukkit.getWorld(plugin.getConfig().getString("enderdragon.end-world"));
 		for (String l : plugin.getConfig().getConfigurationSection("enderdragon.end-crystal-locations").getKeys(false)) {
 			Location location = new Location(endWorld,
 					plugin.getConfig().getDouble("enderdragon.end-crystal-locations." + l + ".x"),
@@ -97,7 +60,7 @@ public class SpawnHandler {
 			location.getWorld().strikeLightningEffect(location);
 			location.getWorld().spawnEntity(location, EntityType.ENDER_CRYSTAL);
 		}
-
+	
 		/*
 		 * Now that the end crystals are in place, we can create the BossBar for the
 		 * Ender Dragon. We store it in a HashMap in Main for portability with the
@@ -126,11 +89,10 @@ public class SpawnHandler {
 		EnderDragon dragon = (EnderDragon) dragonLoc.getWorld().spawnEntity(dragonLoc, EntityType.ENDER_DRAGON);
 		dragon.setPhase(Phase.CIRCLING);
 		
-		if (plugin.getConfig().getString("use-messages") == "true") {
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				player.sendMessage(ChatColor.YELLOW + plugin.getConfig().getString("enderdragon.messages.spawn-message"));
-			}
-		}
+		/*
+		 * if (plugin.getConfig().getString("use-messages") == "true") { for (Player
+		 * player : Bukkit.getOnlinePlayers()) { player.sendMessage(ChatColor.YELLOW +
+		 * plugin.getConfig().getString("enderdragon.messages.spawn-message")); } }
+		 */
 	}
-	
 }

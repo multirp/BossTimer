@@ -1,4 +1,4 @@
-package main.java.com.aspiriamc.bosstimer;
+package main.java.com.multirp.bosstimer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;

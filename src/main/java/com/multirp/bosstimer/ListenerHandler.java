@@ -1,4 +1,4 @@
-package main.java.com.aspiriamc.bosstimer;
+package main.java.com.multirp.bosstimer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BossBar;
@@ -63,18 +63,33 @@ public class ListenerHandler implements Listener {
 		if (event.getEntity() instanceof EnderDragon) {
 			BossBar bar = Main.bars.get(event.getEntityType());
 			bb.resetBar(bar, event.getEntityType());
-		}
-		
-		int respawnTime = plugin.getConfig().getInt("enderdragon.respawn-timer")*60*20;
-	
-		if (plugin.getConfig().getString("enderdragon.respawn-enabled").equalsIgnoreCase("true")) {
-			 Main.dragonTask = Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-				@Override
-				public void run() {
-					SpawnHandler sh = new SpawnHandler();
-					sh.spawnEnderDragon();		
-				}
-			}, respawnTime);
+			
+			long respawnTime = plugin.getConfig().getInt("enderdragon.respawn-timer")*60*20;
+			
+			/*
+			 * if (plugin.getConfig().getString("use-messages") == "true") { for (Player
+			 * player : Bukkit.getOnlinePlayers()) {
+			 * player.sendMessage(plugin.getConfig().getString(
+			 * "enderdragon.messages.death-message")); } }
+			 */
+			
+			/*
+			 * So we put this inside the if statement checking for entity death from a
+			 * dragon.  If we don't, obviously, every single entity death server-wide will
+			 * trigger the task to spawn a dragon.
+			 * 
+			 * This is problematic, to say the least.
+			 */
+			
+			if (plugin.getConfig().getString("enderdragon.respawn-enabled").equalsIgnoreCase("true")) {
+				 Main.dragonTask = Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+					@Override
+					public void run() {
+						SpawnHandler sh = new SpawnHandler();
+						sh.spawnEnderDragon();		
+					}
+				}, respawnTime);
+			}	
 		}
 	}
 }

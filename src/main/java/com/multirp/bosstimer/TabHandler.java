@@ -1,4 +1,4 @@
-package main.java.com.aspiriamc.bosstimer;
+package main.java.com.multirp.bosstimer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
