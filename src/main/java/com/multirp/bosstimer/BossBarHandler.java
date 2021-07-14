@@ -73,4 +73,22 @@ public class BossBarHandler {
 		Main.bars.put(entity, bar);
 	}
 	
+	public initializeBossBars() {
+		
+		/*
+		 * During plugin load, we'll go ahead and prime all of the bossbars that we need for the mobs that we need to handle.
+		 * 
+		 * This will make sure that on a system reboot, we already have all of the bossbars in place for the next startup, so that
+		 * it won't skip making the bossbar.
+		 * 
+		 * This still means the bossbars won't be right with the HP, but I can work on that later.  Maybe write the bosses hp to config
+		 * on shutdown.
+		 * 
+		 * Jesus what did I get into?
+		 */
+		if (!(Main.bars.containsKey(EntityType.ENDER_DRAGON))) {
+			Main.bars.put(EntityType.ENDER_DRAGON,
+					Bukkit.createBossBar("Ender Dragon", BarColor.PURPLE, BarStyle.SEGMENTED_10, BarFlag.PLAY_BOSS_MUSIC));
+		}
+	}
 }

@@ -34,9 +34,26 @@ public class Main extends JavaPlugin {
 		
 		createConfig();
 		
+		BossBarHandler bb = new BossBarHandler();
+		bb.initializeBossBars();
+
 		getServer().getPluginManager().registerEvents(new ListenerHandler(), this);
 		getCommand("bosstimer").setExecutor(new CommandHandler());
 		getCommand("bosstimer").setTabCompleter(new TabHandler());
+	}
+
+	public void onDisable() {
+		/*
+		 * When the plugin disables, we're going to remove all players from all bossbars (if applicable), null them out,
+		 * then null out the instance
+		 */
+		BossBarHandler bb = new BossBarHandler();
+		for (Map.Entry entry : bars.entrySet()) {
+			bb.resetBar(entry.getValue(), entry.getKey());
+		}
+
+		Main.instance = null;
+
 	}
 	
 	private void createConfig() {

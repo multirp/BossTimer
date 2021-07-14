@@ -17,9 +17,6 @@ import org.bukkit.plugin.Plugin;
 
 public class SpawnHandler {
 	
-	BossBarHandler bb = new BossBarHandler();
-	BossBar bar;
-	
 	private static Plugin plugin = Main.getInstance();
 	
 	public void toggleEnderDragon(String respawn) {
@@ -32,6 +29,34 @@ public class SpawnHandler {
 	}
 	
 	public void spawnEnderDragon() {
+
+		//this.spawnEndCrystals();
+
+		/*
+		 * This is basic, we're just getting the Ender Dragon location from the config
+		 * and spawning her.  She will show up without combat metadata, but will gain
+		 * some when she takes damage and go into an actual DragonPhase 0.
+		 * 
+		 * If use-message is true, we'll send whatever the config has for dragon-use-message
+		 * to chat.
+		 */
+		
+		Location dragonLoc = new Location(endWorld,
+				plugin.getConfig().getDouble("enderdragon.dragon-spawn-location.x"),
+				plugin.getConfig().getDouble("enderdragon.dragon-spawn-location.y"),
+				plugin.getConfig().getDouble("enderdragon.dragon-spawn-location.z"));
+		
+		EnderDragon dragon = (EnderDragon) dragonLoc.getWorld().spawnEntity(dragonLoc, EntityType.ENDER_DRAGON);
+		dragon.setPhase(Phase.CIRCLING);
+		
+		/*
+		 * if (plugin.getConfig().getString("use-messages") == "true") { for (Player
+		 * player : Bukkit.getOnlinePlayers()) { player.sendMessage(ChatColor.YELLOW +
+		 * plugin.getConfig().getString("enderdragon.messages.spawn-message")); } }
+		 */
+	}
+
+	public void spawnEndCrystals() {
 		/*  
 		 * We're going to spawn an Ender Dragon. To do this, we want the fight to be
 		 * as 'realistic' as possible without using the normal spawn mechanics.
@@ -60,39 +85,5 @@ public class SpawnHandler {
 			location.getWorld().strikeLightningEffect(location);
 			location.getWorld().spawnEntity(location, EntityType.ENDER_CRYSTAL);
 		}
-	
-		/*
-		 * Now that the end crystals are in place, we can create the BossBar for the
-		 * Ender Dragon. We store it in a HashMap in Main for portability with the
-		 * Namespaced Key of the entity type (Ender_Dragon).  This way we can have one
-		 * BossBar per enemy type.
-		 */
-		if (!(Main.bars.containsKey(EntityType.ENDER_DRAGON))) {
-			Main.bars.put(EntityType.ENDER_DRAGON,
-					Bukkit.createBossBar("Ender Dragon", BarColor.PURPLE, BarStyle.SEGMENTED_10, BarFlag.PLAY_BOSS_MUSIC));
-		}
-		
-		/*
-		 * This is basic, we're just getting the Ender Dragon location from the config
-		 * and spawning her.  She will show up without combat metadata, but will gain
-		 * some when she takes damage and go into an actual DragonPhase 0.
-		 * 
-		 * If use-message is true, we'll send whatever the config has for dragon-use-message
-		 * to chat.
-		 */
-		
-		Location dragonLoc = new Location(endWorld,
-				plugin.getConfig().getDouble("enderdragon.dragon-spawn-location.x"),
-				plugin.getConfig().getDouble("enderdragon.dragon-spawn-location.y"),
-				plugin.getConfig().getDouble("enderdragon.dragon-spawn-location.z"));
-		
-		EnderDragon dragon = (EnderDragon) dragonLoc.getWorld().spawnEntity(dragonLoc, EntityType.ENDER_DRAGON);
-		dragon.setPhase(Phase.CIRCLING);
-		
-		/*
-		 * if (plugin.getConfig().getString("use-messages") == "true") { for (Player
-		 * player : Bukkit.getOnlinePlayers()) { player.sendMessage(ChatColor.YELLOW +
-		 * plugin.getConfig().getString("enderdragon.messages.spawn-message")); } }
-		 */
 	}
 }
